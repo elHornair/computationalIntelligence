@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<script type="text/javascript">
+
+    var myMod = (function () {
+        var myList = [],
+            i;
+
+        function generateRandomBitString (len) {
+            var len = len || 3,
+                myRand = '',
+                i;
+
+            for (i = 0; i < len; i++) {
+                myRand += Math.round(Math.random());
+            }
+
+            return myRand;
+        }
+
+        function binToInt (binString) {
+            var i,
+                intNum = 0,
+                binStringLength = binString.length;
+
+            for (i = binStringLength-1; i>=0; i--) {
+                if (binString.charAt(i) === '1') {
+                    intNum += Math.pow(2, binStringLength-i-1);// 2^wertigkeit
+                }
+            }
+
+            return intNum;
+        }
+
+        function f (obj) {
+            return ((Math.PI * Math.pow(obj.realD, 2)) / 2) + Math.PI * obj.realD * obj.realH;
+        }
+
+        function g (obj) {
+            return ((Math.PI * Math.pow(obj.realD, 2) * obj.realH) / 4);
+        }
+
+        function isGValid (obj) {
+            return obj.gVal >= 300;
+        }
+
+        function normalizeParts (str1, str2) {
+
+        }
+
+        function singlePointRecombination (obj1, obj2) {
+            var cutIndex = Math.round(Math.random()*(obj1.binVal.length-2))+ 1,
+                part1 = obj1.binVal.substring(0, cutIndex),
+                part2 = obj2.binVal.substring(cutIndex),
+                partsCombined = part1 + part2,
+                newObjs = [];
+
+            part1 = partsCombined.substring(0, partsCombined.length/2);
+            part2 = partsCombined.substring(partsCombined.length/2);
+
+            newObjs.push({
+                binVal: part1 + part2,
+                realD: binToInt(part1),
+                realH: binToInt(part2),
+                fVal: null,
+                gVal: null
+            });
+
+            part1 = obj2.binVal.substring(0, cutIndex);
+            part2 = obj1.binVal.substring(cutIndex);
+            partsCombined = part1 + part2;
+            part1 = partsCombined.substring(0, partsCombined.length/2);
+            part2 = partsCombined.substring(partsCombined.length/2);
+
+            newObjs.push({
+                binVal: part1 + part2,
+                realD: binToInt(part1),
+                realH: binToInt(part2),
+                fVal: null,
+                gVal: null
+            });
+
+            return newObjs;
+        }
+
+        // init
+        for (i = 0; i < 30; i++) {
+            var part1 = generateRandomBitString(5),
+                part2 = generateRandomBitString(5);
+
+            myList.push({
+                binVal: part1 + part2,
+                realD: binToInt(part1),
+                realH: binToInt(part2),
+                fVal: null,
+                gVal: null
+            });
+
+            myList[i].fVal = f(myList[i]);
+            myList[i].gVal = g(myList[i]);
+
+        }
+
+        // selection
+        var myIndividual,
+            validIndividuals = [],
+            totalRank = 0,
+            rankMap = [],
+            newSelection = [];
+
+        for (i = 0; i < 30; i++) {
+            myIndividual = myList[i];
+
+            if (isGValid(myIndividual)) {
+                validIndividuals.push(myIndividual);
+            }
+        }
+
+        // individual with best fVal has highest rank
+        validIndividuals.sort(function(a, b){
+            return a.fVal - b.fVal
+        });
+
+        // array abhängig von rang befüllen
+        for (i = 0; i < validIndividuals.length; i++) {
+            for (j = 0; j < i; j++) {
+                rankMap.push(i);
+            }
+        }
+
+        // select new values
+        for (i = 0; i < 30; i++) {
+            newSelection.push(validIndividuals[rankMap[Math.round(Math.random()*rankMap.length)]]);
+        }
+
+        // recombination
+        // TODO: do it so you get 30 elements
+        var newObjs = singlePointRecombination(newSelection[0], newSelection[1]);
+        console.log(newObjs[0].binVal);
+        console.log(newObjs[1].binVal);
+
+    }());
+
+</script>
+</html>
