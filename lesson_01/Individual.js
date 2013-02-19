@@ -4,7 +4,7 @@ var evoMod = (function (evo) {
         var part1 = part1 || generateRandomBitString(5),
             part2 = part2 || generateRandomBitString(part1.length);
 
-        function generateRandomBitString(len) {
+        function generateRandomBitString (len) {
             var len = len || 3,
                 myRand = '',
                 i;
@@ -16,7 +16,7 @@ var evoMod = (function (evo) {
             return myRand;
         }
 
-        function binToInt(binString) {
+        function binToInt (binString) {
             var i,
                 intNum = 0,
                 binStringLength = binString.length;
@@ -30,20 +30,24 @@ var evoMod = (function (evo) {
             return intNum;
         }
 
-        function getRealD() {
+        function getRealD () {
             return binToInt(part1);
         }
 
-        function getRealH() {
+        function getRealH () {
             return binToInt(part2);
         }
 
-        function f() {
+        function f () {
             return ((Math.PI * Math.pow(getRealD(), 2)) / 2) + Math.PI * getRealD() * getRealH();
         }
 
-        function g() {
+        function g () {
             return ((Math.PI * Math.pow(getRealD(), 2) * getRealH()) / 4);
+        }
+
+        function isValid () {
+            return g() >= 300;
         }
 
         // interface
@@ -52,7 +56,8 @@ var evoMod = (function (evo) {
             realD: getRealD(),
             realH: getRealH(),
             fVal: f(),
-            gVal: g()
+            gVal: g(),
+            isValid: isValid
         };
     }
 

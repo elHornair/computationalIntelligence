@@ -7,10 +7,6 @@
         var myList = [],
             i;
 
-        function isGValid (obj) {
-            return obj.gVal >= 300;
-        }
-
         function singlePointRecombination (obj1, obj2) {
             var cutIndex = Math.round(Math.random()*(obj1.binVal.length-2))+ 1,
                 part1 = obj1.binVal.substring(0, cutIndex),
@@ -49,7 +45,7 @@
         for (i = 0; i < 30; i++) {
             myIndividual = myList[i];
 
-            if (isGValid(myIndividual)) {
+            if (myIndividual.isValid()) {
                 validIndividuals.push(myIndividual);
             }
         }
