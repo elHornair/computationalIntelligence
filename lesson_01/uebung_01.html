@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
 <script type="text/javascript" src="Individual.js"></script>
+<script type="text/javascript" src="Selection.js"></script>
 <script type="text/javascript">
 
     var evoMod = (function (evo) {
-        var myList = [],
+        var population = [],
             i;
 
         function singlePointRecombination (obj1, obj2) {
@@ -32,46 +33,17 @@
 
         // init
         for (i = 0; i < 30; i++) {
-            myList.push(evo.generateIndividual());
+            population.push(evo.generateIndividual());
         }
 
         // selection
-        var myIndividual,
-            validIndividuals = [],
-            totalRank = 0,
-            rankMap = [],
-            newSelection = [];
-
-        for (i = 0; i < 30; i++) {
-            myIndividual = myList[i];
-
-            if (myIndividual.isValid()) {
-                validIndividuals.push(myIndividual);
-            }
-        }
-
-        // individual with best fVal has highest rank
-        validIndividuals.sort(function(a, b){
-            return a.fVal - b.fVal
-        });
-
-        // array abhängig von rang befüllen
-        for (i = 0; i < validIndividuals.length; i++) {
-            for (j = 0; j < i; j++) {
-                rankMap.push(i);
-            }
-        }
-
-        // select new values
-        for (i = 0; i < 30; i++) {
-            newSelection.push(validIndividuals[rankMap[Math.round(Math.random()*rankMap.length)]]);
-        }
+        population = evo.selectRankingBased(population);
 
         // recombination
         // TODO: do it so you get 30 elements
-        var newObjs = singlePointRecombination(newSelection[0], newSelection[1]);
-        console.log(newObjs[0].binVal);
-        console.log(newObjs[1].binVal);
+//        var newObjs = singlePointRecombination(newSelection[0], newSelection[1]);
+//        console.log(newObjs[0].binVal);
+//        console.log(newObjs[1].binVal);
 
 
     }(evoMod || {}))
