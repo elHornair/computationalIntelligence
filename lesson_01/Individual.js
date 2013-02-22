@@ -23,43 +23,53 @@ var evoMod = (function (evo) {
 
             for (i = binStringLength-1; i>=0; i--) {
                 if (binString.charAt(i) === '1') {
-                    intNum += Math.pow(2, binStringLength-i-1);// 2^wertigkeit
+                    intNum += Math.pow(2, binStringLength-i-1);// 2^weight
                 }
             }
 
             return intNum;
         }
 
+        // binary encoded data of the individual
+        function getBinVal () {
+            return part1 + part2;
+        }
+
+        // diameter as real number
         function getRealD () {
             return binToInt(part1);
         }
 
+        // height as real number
         function getRealH () {
             return binToInt(part2);
         }
 
+        // surface, to be minimized
         function f () {
             return ((Math.PI * Math.pow(getRealD(), 2)) / 2) + Math.PI * getRealD() * getRealH();
         }
 
+        // volume, additional condition
         function g () {
             return ((Math.PI * Math.pow(getRealD(), 2) * getRealH()) / 4);
         }
 
+        // additional condition: volume must be >= 300
         function isValid () {
             return g() >= 300;
         }
 
         // interface
         return{
-            binVal: part1 + part2,
+            binVal: getBinVal(),
             realD: getRealD(),
             realH: getRealH(),
             fVal: f(),
-            gVal: g(),
+            gVal: g(),//
             isValid: isValid
         };
-    }
+    };
 
     return evo;
 
