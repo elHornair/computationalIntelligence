@@ -1,6 +1,8 @@
 var evoMod = (function (evo) {
 
-    function filterValidIndividuals (population) {
+    "use strict";
+
+    function filterValidIndividuals(population) {
         var i,
             filteredPopulation = [];
 
@@ -13,7 +15,7 @@ var evoMod = (function (evo) {
         return filteredPopulation;
     }
 
-    function generateRankMap (population) {
+    function generateRankMap(population) {
         var i,
             j,
             rankMap = [];
@@ -47,7 +49,7 @@ var evoMod = (function (evo) {
 
         // select new values
         for (i = 0; i < originalPopulationLength; i++) {
-            selectedPopulation.push(population[rankMap[Math.round(Math.random()*(rankMap.length-1))]]);
+            selectedPopulation.push(population[rankMap[Math.round(Math.random() * (rankMap.length - 1))]]);
         }
 
         return selectedPopulation;

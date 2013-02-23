@@ -6,8 +6,12 @@
 <script type="text/javascript" src="Recombination.js"></script>
 
 <script type="text/javascript">
+    /*global console */
 
     var evoMod = (function (evo) {
+
+        "use strict";
+
         var population = [],
             i;
 
@@ -34,7 +38,7 @@
             population = evo.doSinglePointRecombination(population);
         }
 
-    }(evoMod || {}))
+    }(evoMod || {}));
 
 </script>
 </head>

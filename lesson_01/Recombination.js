@@ -1,5 +1,7 @@
 var evoMod = (function (evo) {
 
+    "use strict";
+
     function recombineSingePoint(ind1, ind2) {
         var cutIndex = Math.round(Math.random() * (ind1.binVal.length - 2)) + 1,
             part1 = ind1.binVal.substring(0, cutIndex),
