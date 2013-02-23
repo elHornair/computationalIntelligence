@@ -4,6 +4,7 @@
 <script type="text/javascript" src="Individual.js"></script>
 <script type="text/javascript" src="Selection.js"></script>
 <script type="text/javascript" src="Recombination.js"></script>
+<script type="text/javascript" src="Mutation.js"></script>
 
 <script type="text/javascript">
     /*global console */
@@ -32,10 +33,13 @@
         }
 
         // iterate (evolution)
-        for (i = 0; i < 10; i++) {
+        for (i = 0; i < 100; i++) {
             // selection
             population = evo.selectRankingBased(population);
             printBestIndividualValues(population);
+
+            // mutation
+            population = evo.doMutation(population, 0.1);
 
             // recombination
             population = evo.doSinglePointRecombination(population);
