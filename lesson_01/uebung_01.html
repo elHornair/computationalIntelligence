@@ -15,12 +15,15 @@
         var population = [],
             i;
 
-        function printBestIndividual(population) {
+        function printBestIndividualValues(population) {
+            var bestInd;
+
             population.sort(function (a, b) {
-                return a.fVal - b.fVal;
+                return a.getF() - b.getF();
             });
 
-            console.log(population[0]);
+            bestInd = (population[0]);
+            console.log('Best individual of this generation -> f value: ' + bestInd.getF() + ',\tg value: ' + bestInd.getG());
         }
 
         // init
@@ -32,7 +35,7 @@
         for (i = 0; i < 10; i++) {
             // selection
             population = evo.selectRankingBased(population);
-            printBestIndividual(population);
+            printBestIndividualValues(population);
 
             // recombination
             population = evo.doSinglePointRecombination(population);

@@ -20,9 +20,9 @@ var evoMod = (function (evo) {
             j,
             rankMap = [];
 
-        // sort population - individual with lowest fVal has highest rank
+        // sort population - individual with lowest f value has highest rank
         population.sort(function (a, b) {
-            return a.fVal - b.fVal;
+            return a.getF() - b.getF();
         });
 
         // rank map maps a number to an index in the population collection.

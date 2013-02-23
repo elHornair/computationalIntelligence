@@ -44,6 +44,11 @@ var evoMod = (function (evo) {
             return part1 + part2;
         }
 
+        function setBinVal(binVal) {
+            part1 = binVal.substring(0, binVal.length / 2);
+            part2 = binVal.substring(binVal.length / 2);
+        }
+
         // diameter as real number
         function getRealD() {
             return binToInt(part1);
@@ -71,11 +76,12 @@ var evoMod = (function (evo) {
 
         // interface
         return {
-            binVal: getBinVal(),
-            realD: getRealD(),
-            realH: getRealH(),
-            fVal: f(),
-            gVal: g(),//
+            getBinVal: getBinVal,
+            setBinVal: setBinVal,
+            getRealD: getRealD,
+            getRealH: getRealH,
+            getF: f,
+            getG: g,
             isValid: isValid
         };
     };

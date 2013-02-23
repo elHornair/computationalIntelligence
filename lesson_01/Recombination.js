@@ -3,9 +3,9 @@ var evoMod = (function (evo) {
     "use strict";
 
     function recombineSingePoint(ind1, ind2) {
-        var cutIndex = Math.round(Math.random() * (ind1.binVal.length - 2)) + 1,
-            part1 = ind1.binVal.substring(0, cutIndex),
-            part2 = ind2.binVal.substring(cutIndex),
+        var cutIndex = Math.round(Math.random() * (ind1.getBinVal().length - 2)) + 1,
+            part1 = ind1.getBinVal().substring(0, cutIndex),
+            part2 = ind2.getBinVal().substring(cutIndex),
             partsCombined = part1 + part2,
             newInds = [];
 
@@ -14,8 +14,8 @@ var evoMod = (function (evo) {
 
         newInds.push(evo.generateIndividual(part1, part2));
 
-        part1 = ind2.binVal.substring(0, cutIndex);
-        part2 = ind1.binVal.substring(cutIndex);
+        part1 = ind2.getBinVal().substring(0, cutIndex);
+        part2 = ind1.getBinVal().substring(cutIndex);
         partsCombined = part1 + part2;
         part1 = partsCombined.substring(0, partsCombined.length / 2);
         part2 = partsCombined.substring(partsCombined.length / 2);
