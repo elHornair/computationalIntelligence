@@ -1,34 +1,22 @@
 <!DOCTYPE html>
 <html>
+<head>
 <script type="text/javascript" src="Individual.js"></script>
 <script type="text/javascript" src="Selection.js"></script>
+<script type="text/javascript" src="Recombination.js"></script>
+
 <script type="text/javascript">
 
     var evoMod = (function (evo) {
         var population = [],
             i;
 
-        function singlePointRecombination (obj1, obj2) {
-            var cutIndex = Math.round(Math.random()*(obj1.binVal.length-2))+ 1,
-                part1 = obj1.binVal.substring(0, cutIndex),
-                part2 = obj2.binVal.substring(cutIndex),
-                partsCombined = part1 + part2,
-                newObjs = [];
+        function printBestIndividual(population) {
+            population.sort(function (a, b) {
+                return a.fVal - b.fVal;
+            });
 
-            part1 = partsCombined.substring(0, partsCombined.length/2);
-            part2 = partsCombined.substring(partsCombined.length/2);
-
-            newObjs.push(evo.generateIndividual(part1, part2));
-
-            part1 = obj2.binVal.substring(0, cutIndex);
-            part2 = obj1.binVal.substring(cutIndex);
-            partsCombined = part1 + part2;
-            part1 = partsCombined.substring(0, partsCombined.length/2);
-            part2 = partsCombined.substring(partsCombined.length/2);
-
-            newObjs.push(evo.generateIndividual(part1, part2));
-
-            return newObjs;
+            console.log(population[0]);
         }
 
         // init
@@ -36,17 +24,18 @@
             population.push(evo.generateIndividual());
         }
 
-        // selection
-        population = evo.selectRankingBased(population);
+        // iterate (evolution)
+        for (i = 0; i < 10; i++) {
+            // selection
+            population = evo.selectRankingBased(population);
+            printBestIndividual(population);
 
-        // recombination
-        // TODO: do it so you get 30 elements
-//        var newObjs = singlePointRecombination(newSelection[0], newSelection[1]);
-//        console.log(newObjs[0].binVal);
-//        console.log(newObjs[1].binVal);
-
+            // recombination
+            population = evo.doSinglePointRecombination(population);
+        }
 
     }(evoMod || {}))
 
 </script>
+</head>
 </html>
