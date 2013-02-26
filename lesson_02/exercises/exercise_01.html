@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="style/main.css"media="screen">
+<script type="text/javascript" src="libs/raphael.js"></script>
+<script type="text/javascript" src="Graphical.js"></script>
+<script type="text/javascript" src="Individual.js"></script>
+<script type="text/javascript" src="Selection.js"></script>
+<script type="text/javascript" src="Recombination.js"></script>
+<script type="text/javascript" src="Mutation.js"></script>
+
+<script type="text/javascript">
+    /*global console, window */
+
+    var evoMod = (function (evo) {
+
+        "use strict";
+
+        window.onload = function () {
+
+            var bestIndividuals = [],
+                population = [],
+                i;
+
+            function sortFun(a, b) {
+                return a.getF() - b.getF();
+            }
+
+            function saveBestIndividual(population) {
+                population.sort(sortFun);
+                bestIndividuals.push(population[0]);
+            }
+
+            // init
+            for (i = 0; i < 30; i++) {
+                population.push(evo.generateIndividual());
+            }
+
+            // iterate (evolution)
+            for (i = 0; i < 100; i++) {
+
+                // selection
+                population = evo.selectRankingBased(population);
+
+                // save population state
+                saveBestIndividual(population);
+
+                // mutation
+                population = evo.doMutation(population, 0.01);// 1% is considered a good value (10% is too high)
+
+                // recombination
+                population = evo.doSinglePointRecombination(population, 10);
+            }
+
+            // prepare graphic
+            evo.displayGraphic(bestIndividuals);
+
+        };
+
+    }(evoMod || {}));
+
+</script>
+</head>
+<body>
+    <h1>Exercise 02 of lesson 02: A simple genetic algorithm</h1>
+    <p>This small application minimizes the surface of a cylinder while keeping the volume above certain level.</p>
+    <p>The graph shows the generations on the x-axis and the surface of the best individual (per generation (red) and in history (orange)) on the y-axis.</p>
+    <div id="holder"></div>
+</body>
+</html>
