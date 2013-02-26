@@ -54,11 +54,11 @@
                 // save population state
                 savePopulationState(population);
 
-                // mutation
-                population = evo.doMutation(population, 0.1);
-
                 // recombination
                 population = evo.doSinglePointRecombination(population);
+
+                // mutation
+                population = evo.doMutation(population, 0.1);
             }
 
             // prepare graphic
