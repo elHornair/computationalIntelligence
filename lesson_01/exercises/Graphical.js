@@ -36,10 +36,12 @@ var evoMod = (function (evo) {
             for (i = 0; i < length; i++) {
                 dotsy[j][i] = generation[i].getF() / 20;
                 if (i !== 0) {
+                    // all individuals but the first
                     x += 20;
                     y = 240 - dotsy[j][i];
                     path += "," + [x, y];
                 } else {
+                    // first individual
                     path += "M" + [10, (y = 240 - dotsy[j][i])] + "R";
                 }
             }
