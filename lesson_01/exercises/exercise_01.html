@@ -1,49 +1,70 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="stylesheet" href="style/main.css"media="screen">
+<script type="text/javascript" src="libs/raphael.js"></script>
+<script type="text/javascript" src="Graphical.js"></script>
 <script type="text/javascript" src="Individual.js"></script>
 <script type="text/javascript" src="Selection.js"></script>
 <script type="text/javascript" src="Recombination.js"></script>
 <script type="text/javascript" src="Mutation.js"></script>
 
 <script type="text/javascript">
-    /*global console */
+    /*global console, window */
 
     var evoMod = (function (evo) {
 
         "use strict";
 
-        var population = [],
-            i;
+        window.onload = function () {
 
-        function printBestIndividualValues(population) {
-            var bestInd;
+            var populationHistory = [],
+                population = [],
+                i;
 
-            population.sort(function (a, b) {
+            function sortFun(a, b) {
                 return a.getF() - b.getF();
-            });
+            }
 
-            bestInd = (population[0]);
-            console.log('Best individual of this generation -> f value: ' + bestInd.getF() + ',\tg value: ' + bestInd.getG());
-        }
+            function printBestIndividualValues(population) {
+                var bestInd;
 
-        // init
-        for (i = 0; i < 30; i++) {
-            population.push(evo.generateIndividual());
-        }
+                population.sort(sortFun);
 
-        // iterate (evolution)
-        for (i = 0; i < 100; i++) {
-            // selection
-            population = evo.selectRankingBased(population);
-            printBestIndividualValues(population);
+                bestInd = (population[0]);
+                console.log('Best individual of this generation -> f value: ' + bestInd.getF() + ',\tg value: ' + bestInd.getG());
+            }
 
-            // mutation
-            population = evo.doMutation(population, 0.1);
+            function savePopulationState(population) {
+                populationHistory.push(population);
+            }
 
-            // recombination
-            population = evo.doSinglePointRecombination(population);
-        }
+            // init
+            for (i = 0; i < 30; i++) {
+                population.push(evo.generateIndividual());
+            }
+
+            // iterate (evolution)
+            for (i = 0; i < 30; i++) {
+
+                // selection
+                population = evo.selectRankingBased(population);
+//                printBestIndividualValues(population);
+
+                // save population state
+                savePopulationState(population);
+
+                // mutation
+                population = evo.doMutation(population, 0.1);
+
+                // recombination
+                population = evo.doSinglePointRecombination(population);
+            }
+
+            // prepare graphic
+            evo.displayGraphic(populationHistory);
+
+        };
 
     }(evoMod || {}));
 
@@ -51,7 +72,8 @@
 </head>
 <body>
     <h1>Exercise 01 of lesson 01: A simple genetic algorithm</h1>
-    <p>This minimizes the surface of a cylinder while keeping the volume above certain level.<strong>Open the browser console to see the results.</strong></p>
+    <p>This small application minimizes the surface of a cylinder while keeping the volume above certain level.</p>
+    <p>The graphic displays one generation of the evolution process at a time. Use the arrows to move forward to the next generation. The graphic shows the generation after the selection (so only valid individuals are displayed). Each point on the <strong>x-axis</strong> represents an individual of this generation. The <strong>y-axis</strong> shows their respective surface values. The individuals are sortet by the value of their surface, so the best individual (the one with the smallest surface) is the one on the most left.</p>
     <h3>Features</h3>
     <ul>
         <li>Initialisation</li>
@@ -62,5 +84,6 @@
             <li>Mutation</li>
         </ul>
     </ul>
+    <div id="holder"></div>
 </body>
 </html>

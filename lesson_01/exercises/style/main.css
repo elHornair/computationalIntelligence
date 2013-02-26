@@ -1,0 +1,13 @@
+body {
+    background: #333;
+    color: #fff;
+    font: 300 100.1% "Helvetica Neue", Helvetica, "Arial Unicode MS", Arial, sans-serif;
+}
+strong {
+    text-decoration: underline;
+}
+
+#holder {
+    height: 230px;
+    width: 620px;
+}
