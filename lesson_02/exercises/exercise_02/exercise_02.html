@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="../style/main.css"media="screen">
+<script type="text/javascript" src="../libs/raphael.js"></script>
+<script type="text/javascript" src="Graphical.js"></script>
+<script type="text/javascript" src="Individual.js"></script>
+<script type="text/javascript" src="Selection.js"></script>
+<script type="text/javascript" src="Recombination.js"></script>
+<script type="text/javascript" src="Mutation.js"></script>
+
+<script type="text/javascript">
+    /*global console, window */
+
+    var evoMod = (function (evo) {
+
+        "use strict";
+
+        window.onload = function () {
+
+            var bestIndividuals = [],
+                population = [],
+                newGeneration,
+                newIndividual,
+                mu = 7,
+                kappa = 15,
+                lambda = 49,
+                p = 3,
+                pool,
+                i,
+                j,
+                l;
+
+            function sortFun(a, b) {
+                return a.getF() - b.getF();
+            }
+
+            function saveBestIndividual(population) {
+                population.sort(sortFun);
+                bestIndividuals.push(population[0]);
+            }
+
+            function selectRandomIndividual(population) {
+                return population[Math.round(Math.random() * (population.length - 1))];
+            }
+
+            // init
+            for (i = 0; i < mu; i++) {
+                population.push(evo.generateIndividual());
+            }
+
+            // iterate (evolution)
+            for (i = 0; i < 100; i++) {
+                newGeneration = [];
+
+                // generate lambda children
+                for (j = 1; j <= lambda; j++) {
+                    // select p individuals for recombination
+                    pool = [];
+
+                    for (l = 0; l < p; l++) {
+                        pool.push(selectRandomIndividual(population));
+                    }
+
+                    // TODO: strategieparameter rekombinieren. was sind hier strategieparameter? pm zum beispiel?
+                    newIndividual = evo.averageObjectRecombine(pool);// recombine object parameters
+                    // TODO: strategieparameter mutieren. was sind hier strategieparameter? pm zum beispiel?
+                    newIndividual = evo.isotropicObjectMutation(newIndividual);// mutate object parameters
+
+                    newGeneration.push(newIndividual);
+                }
+
+                // increase age of individuals and kill to old ones
+                for (j = 0; j < population.length; j++) {
+                    population[j].increaseAge();
+                    if (population[j].getAge() > kappa) {
+                        population.splice(j, 1);
+                    }
+                }
+
+                // add new generation to population
+                population = population.concat(newGeneration);
+
+                // selection
+                population = evo.selectRankingBased(population, mu);
+
+                saveBestIndividual(population);
+            }
+
+            // prepare graphic
+            evo.displayGraphic(bestIndividuals);
+
+        };
+
+    }(evoMod || {}));
+
+</script>
+</head>
+<body>
+    <h1>Exercise 02 of lesson 02: Evolutionsstrategie</h1>
+    <div id="holder"></div>
+</body>
+</html>
